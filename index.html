@@ -23,14 +23,14 @@
       .eyebrow { margin:0 0 8px; font-size:.73rem; letter-spacing:.19em; text-transform:uppercase; font-weight:700; color:#a75e73; }
       .eyebrow::before, .eyebrow::after { content:"✦"; margin:0 .55rem; color:var(--gold); font-size:.65rem; }
       h1 { margin:0 0 28px; font-family:Parisienne,cursive; font-weight:400; font-size:clamp(3rem,9vw,5.3rem); line-height:.92; color:#a84465; }
-      .envelope-wrap { width:min(86vw,440px); height:285px; margin:auto; cursor:pointer; perspective:1000px; position:relative; filter:drop-shadow(0 19px 18px rgba(119,52,73,.18)); }
-      .envelope { position:absolute; inset:25px 0 0; background:linear-gradient(145deg,#f7bdca,#eca0b5); border-radius:7px; overflow:hidden; border:1px solid #f9d1da; }
+      .envelope-wrap { width:min(86vw,440px); height:clamp(230px,56vw,285px); margin:auto; cursor:pointer; perspective:1000px; position:relative; filter:drop-shadow(0 19px 18px rgba(119,52,73,.18)); }
+      .envelope { position:absolute; inset:clamp(15px,4vw,25px) 0 0; background:linear-gradient(145deg,#f7bdca,#eca0b5); border-radius:7px; overflow:hidden; border:1px solid #f9d1da; }
       .envelope::before { content:""; position:absolute; inset:0; background:linear-gradient(145deg,transparent 49.6%,#e889a2 50% 50.8%,transparent 51%), linear-gradient(215deg,transparent 49.6%,#e889a2 50% 50.8%,transparent 51%); }
       .letter { position:absolute; z-index:1; bottom:8px; left:7.5%; width:85%; height:80%; display:grid; place-items:center; padding:25px; background:repeating-linear-gradient(0deg,transparent,transparent 26px,rgba(223,169,177,.13) 27px),var(--paper); border-radius:3px; box-shadow:0 2px 7px rgba(88,40,54,.12); transition:transform .95s cubic-bezier(.2,.8,.2,1), height .7s ease; }
       .letter::before { content:"For Aderonke"; position:absolute; top:22px; color:#b75d76; font-size:.68rem; font-weight:700; letter-spacing:.16em; text-transform:uppercase; }
       .letter span { font-family:Parisienne,cursive; font-size:2.2rem; color:#c85675; transform:rotate(-4deg); }
-      .flap { z-index:3; position:absolute; top:25px; left:0; width:0; height:0; border-left:220px solid transparent; border-right:220px solid transparent; border-top:145px solid #f7b8c7; transform-origin:top; transition:transform .72s cubic-bezier(.4,0,.2,1); filter:drop-shadow(0 2px 1px #cb789045); }
-      .seal { z-index:4; position:absolute; top:136px; left:50%; translate:-50% -50%; width:60px; height:60px; border:3px double #f8cfda; border-radius:50%; display:grid; place-items:center; background:radial-gradient(circle at 35% 28%,#e87896,#bd3d62); color:#fff7f2; font-size:1.45rem; box-shadow:0 4px 10px #9f3f5c70; transition:opacity .25s; }
+      .flap { z-index:3; position:absolute; top:clamp(15px,4vw,25px); left:0; width:100%; height:clamp(100px,29vw,145px); background:#f7b8c7; clip-path:polygon(0 0,100% 0,50% 100%); transform-origin:top; transition:transform .72s cubic-bezier(.4,0,.2,1); filter:drop-shadow(0 2px 1px #cb789045); }
+      .seal { z-index:4; position:absolute; top:48%; left:50%; translate:-50% -50%; width:clamp(48px,13vw,60px); height:clamp(48px,13vw,60px); border:3px double #f8cfda; border-radius:50%; display:grid; place-items:center; background:radial-gradient(circle at 35% 28%,#e87896,#bd3d62); color:#fff7f2; font-size:1.45rem; box-shadow:0 4px 10px #9f3f5c70; transition:opacity .25s; }
       .hint { margin:25px 0 0; color:#8c5365; font-size:.95rem; animation:pulse 1.8s ease-in-out infinite; }
       .envelope-wrap.open { cursor:default; } .envelope-wrap.open .flap { transform:rotateX(180deg); z-index:0; } .envelope-wrap.open .seal { opacity:0; } .envelope-wrap.open .letter { transform:translateY(-112px); height:90%; }
       .question, .answer { position:absolute; inset:0; display:none; align-content:center; justify-items:center; min-height:100%; padding:20px; animation:fadeUp .65s ease both; }
@@ -49,7 +49,7 @@
       .again { display:inline-block; margin-top:28px; background:none; color:#b44e6c; border:1px solid #eab2c0; padding:10px 20px; min-width:0; font-size:.83rem; }
       .floating-heart { position:fixed; bottom:-3rem; color:#e45b7c; pointer-events:none; animation:float 3.6s ease-in forwards; z-index:10; }
       @keyframes fadeIn { from{opacity:0;transform:translateY(15px)}to{opacity:1;transform:none} } @keyframes fadeUp { from{opacity:0;transform:translateY(25px) scale(.97)}to{opacity:1;transform:none} } @keyframes pulse { 50%{opacity:.46;transform:translateY(3px)} } @keyframes float { to{transform:translate(var(--x),-115vh) rotate(300deg);opacity:0} } @keyframes drift { to{transform:translate(-11vmax,13vmax) scale(1.16)} }
-      @media (max-width:480px) { .scene{min-height:560px} .envelope-wrap { transform:scale(.83); margin-top:-18px; margin-bottom:-25px; } .question,.answer{min-height:100%} .question-card,.answer-card{padding:40px 22px} }
+      @media (max-width:480px) { .scene{min-height:560px} .question,.answer{min-height:100%} .question-card,.answer-card{padding:40px 22px} }
     </style>
   </head>
   <body>
@@ -59,16 +59,16 @@
         <p class="eyebrow">A little something, just for you</p>
         <h1>You've got a letter</h1>
         <div class="envelope-wrap" id="envelope" role="button" tabindex="0" aria-label="Open your letter">
-          <div class="envelope"><div class="letter"><span>To my favourite tout ♥</span></div></div>
+          <div class="envelope"><div class="letter"><span>To my favourite person ♥</span></div></div>
           <div class="flap"></div><div class="seal">♥</div>
         </div>
         <p class="hint">Tap the envelope to open it</p>
       </section>
       <section class="question" id="question" aria-live="polite">
-        <div class="question-card"><div class="tiny-heart">♥</div><h2>Omo iyami, shebi o wa<br>pelu mi?</h2><p>ko si werey. I hope you know that.</p><div class="button-area" id="buttonArea"><button id="yes">Yes, always ♥</button><button id="no" aria-label="No">No</button></div><p class="no-tease">I know you're stubborn, you would want to click no. 🙂</p></div>
+        <div class="question-card"><div class="tiny-heart">♥</div><h2>Omo iyami,<br>shebi o wa<br>pelu mi?</h2><p>My heart has already decided. I hope yours knows the answer too.</p><div class="button-area" id="buttonArea"><button id="yes">Yes, always ♥</button><button id="no" aria-label="No">No</button></div><p class="no-tease">I know you're stubborn, you would want to click no. 🙂</p></div>
       </section>
       <section class="answer" id="answer" aria-live="polite">
-        <div class="answer-card"><div class="sparkles">✦ ♥ ✦</div><h2>You are my<br>personal person<br>[TIMOTIMO]</h2><p>Aderonke omo Pa Awanebi, idan mi gangan. Thank you for being so great to me. You are astonishing and beautiful, though u get touch.</p><p class="signature">My guy, i dey with you ♥</p><button class="again" id="again">Open our letter again</button></div>
+        <div class="answer-card"><div class="sparkles">✦ ♥ ✦</div><h2>You are my<br>personal person<br>[TIMOTIMO]</h2><p>Aderonke omo Pa Awanebi, idan mi gangan. Thank you for being so great to me. You are astonishing and beautiful, though u get touch.</p><p class="signature">my guy, i dey with you ♥</p><button class="again" id="again">Open our letter again</button></div>
       </section>
     </main>
     <script>
