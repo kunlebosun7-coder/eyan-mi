@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#f7dbe2" />
+    <title>A little letter for you</title>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Parisienne&display=swap');
+
+      :root { --ink:#573543; --rose:#e96e8d; --deep-rose:#b63c62; --cream:#fff9f3; --paper:#fffdf9; --gold:#d9a84d; --shadow:0 25px 60px rgba(117,52,72,.18); }
+      * { box-sizing:border-box; }
+      body { margin:0; min-height:100svh; overflow:hidden; display:grid; place-items:center; color:var(--ink); font-family:"DM Sans", sans-serif; background:radial-gradient(circle at 20% 15%, #fff7eb 0 13%, transparent 35%), radial-gradient(circle at 83% 88%, #f9c9d5 0 5%, transparent 30%), linear-gradient(135deg,#f9e2e7,#f7d3dc 48%,#efbed0); }
+      body::selection { background:#e99bb0; color:#fff; }
+      .glow { position:fixed; width:45vmax; height:45vmax; border-radius:50%; filter:blur(42px); opacity:.32; pointer-events:none; z-index:-2; animation:drift 11s ease-in-out infinite alternate; background:#ffe9bd; top:-24vmax; right:-15vmax; }
+      body::before, body::after { content:"♥"; position:fixed; color:#fff8f5; opacity:.47; font-size:clamp(4rem,10vw,8rem); z-index:-1; }
+      body::before { top:5%; left:7%; transform:rotate(-16deg); } body::after { bottom:3%; right:8%; transform:rotate(18deg); }
+      /* Reserve a real stage for every scene.  Without this, hiding the
+         intro could collapse the parent on some desktop browsers and put the
+         question (including its buttons) outside the visible area. */
+      .scene { width:min(92vw,620px); min-height:620px; display:grid; place-items:center; text-align:center; position:relative; }
+      .intro { animation:fadeIn .8s ease both; }
+      .eyebrow { margin:0 0 8px; font-size:.73rem; letter-spacing:.19em; text-transform:uppercase; font-weight:700; color:#a75e73; }
+      .eyebrow::before, .eyebrow::after { content:"✦"; margin:0 .55rem; color:var(--gold); font-size:.65rem; }
+      h1 { margin:0 0 28px; font-family:Parisienne,cursive; font-weight:400; font-size:clamp(3rem,9vw,5.3rem); line-height:.92; color:#a84465; }
+      .envelope-wrap { width:min(86vw,440px); height:285px; margin:auto; cursor:pointer; perspective:1000px; position:relative; filter:drop-shadow(0 19px 18px rgba(119,52,73,.18)); }
+      .envelope { position:absolute; inset:25px 0 0; background:linear-gradient(145deg,#f7bdca,#eca0b5); border-radius:7px; overflow:hidden; border:1px solid #f9d1da; }
+      .envelope::before { content:""; position:absolute; inset:0; background:linear-gradient(145deg,transparent 49.6%,#e889a2 50% 50.8%,transparent 51%), linear-gradient(215deg,transparent 49.6%,#e889a2 50% 50.8%,transparent 51%); }
+      .letter { position:absolute; z-index:1; bottom:8px; left:7.5%; width:85%; height:80%; display:grid; place-items:center; padding:25px; background:repeating-linear-gradient(0deg,transparent,transparent 26px,rgba(223,169,177,.13) 27px),var(--paper); border-radius:3px; box-shadow:0 2px 7px rgba(88,40,54,.12); transition:transform .95s cubic-bezier(.2,.8,.2,1), height .7s ease; }
+      .letter::before { content:"For Aderonke"; position:absolute; top:22px; color:#b75d76; font-size:.68rem; font-weight:700; letter-spacing:.16em; text-transform:uppercase; }
+      .letter span { font-family:Parisienne,cursive; font-size:2.2rem; color:#c85675; transform:rotate(-4deg); }
+      .flap { z-index:3; position:absolute; top:25px; left:0; width:0; height:0; border-left:220px solid transparent; border-right:220px solid transparent; border-top:145px solid #f7b8c7; transform-origin:top; transition:transform .72s cubic-bezier(.4,0,.2,1); filter:drop-shadow(0 2px 1px #cb789045); }
+      .seal { z-index:4; position:absolute; top:136px; left:50%; translate:-50% -50%; width:60px; height:60px; border:3px double #f8cfda; border-radius:50%; display:grid; place-items:center; background:radial-gradient(circle at 35% 28%,#e87896,#bd3d62); color:#fff7f2; font-size:1.45rem; box-shadow:0 4px 10px #9f3f5c70; transition:opacity .25s; }
+      .hint { margin:25px 0 0; color:#8c5365; font-size:.95rem; animation:pulse 1.8s ease-in-out infinite; }
+      .envelope-wrap.open { cursor:default; } .envelope-wrap.open .flap { transform:rotateX(180deg); z-index:0; } .envelope-wrap.open .seal { opacity:0; } .envelope-wrap.open .letter { transform:translateY(-112px); height:90%; }
+      .question, .answer { position:absolute; inset:0; display:none; align-content:center; justify-items:center; min-height:100%; padding:20px; animation:fadeUp .65s ease both; }
+      .question.visible, .answer.visible { display:grid; }
+      .question-card, .answer-card { width:min(100%,500px); padding:48px 28px; background:linear-gradient(135deg,rgba(255,255,255,.95),rgba(255,249,245,.86)); backdrop-filter:blur(7px); border:1px solid rgba(255,255,255,.9); border-radius:25px; box-shadow:var(--shadow); position:relative; overflow:hidden; }
+      .question-card::after, .answer-card::after { content:""; position:absolute; inset:8px; pointer-events:none; border:1px solid rgba(203,113,139,.21); border-radius:19px; }
+      .tiny-heart { font-size:2rem; color:var(--rose); margin-bottom:10px; }
+      h2 { margin:0; color:#9b405d; font-family:Parisienne,cursive; font-size:clamp(3.2rem,10vw,5rem); font-weight:400; line-height:1; position:relative; z-index:1; }
+      .question-card p { margin:17px auto 29px; max-width:340px; line-height:1.65; color:#765060; position:relative; z-index:1; }
+      .button-area { position:relative; height:68px; display:flex; justify-content:center; align-items:center; gap:18px; }
+      .no-tease { margin:12px 0 0; color:#aa6176; font-size:.82rem; font-style:italic; }
+      button { border:0; font:700 1rem "DM Sans",sans-serif; cursor:pointer; padding:14px 31px; min-width:111px; border-radius:999px; transition:transform .18s ease,box-shadow .18s ease; position:relative; z-index:2; }
+      button:hover { transform:translateY(-3px); } #yes { color:white; background:linear-gradient(135deg,#ec7592,#c84469); box-shadow:0 8px 18px #d4577873; } #no { color:#936274; background:#f5e5e8; box-shadow:0 4px 10px #c87b8d33; position:relative; }
+      .answer-card { padding:50px 34px; } .answer-card h2 { font-size:clamp(3rem,9vw,4.55rem); } .answer-card p { color:#724b5a; line-height:1.75; font-size:1.04rem; margin:21px auto 0; max-width:380px; position:relative; z-index:1; } .signature { font-family:Parisienne,cursive; font-size:1.9rem; color:#b44769; margin:18px 0 0!important; }
+      .sparkles { color:#d6a74f; font-size:1.4rem; letter-spacing:.3em; position:relative; z-index:1; }
+      .again { display:inline-block; margin-top:28px; background:none; color:#b44e6c; border:1px solid #eab2c0; padding:10px 20px; min-width:0; font-size:.83rem; }
+      .floating-heart { position:fixed; bottom:-3rem; color:#e45b7c; pointer-events:none; animation:float 3.6s ease-in forwards; z-index:10; }
+      @keyframes fadeIn { from{opacity:0;transform:translateY(15px)}to{opacity:1;transform:none} } @keyframes fadeUp { from{opacity:0;transform:translateY(25px) scale(.97)}to{opacity:1;transform:none} } @keyframes pulse { 50%{opacity:.46;transform:translateY(3px)} } @keyframes float { to{transform:translate(var(--x),-115vh) rotate(300deg);opacity:0} } @keyframes drift { to{transform:translate(-11vmax,13vmax) scale(1.16)} }
+      @media (max-width:480px) { .scene{min-height:560px} .envelope-wrap { transform:scale(.83); margin-top:-18px; margin-bottom:-25px; } .question,.answer{min-height:100%} .question-card,.answer-card{padding:40px 22px} }
+    </style>
+  </head>
+  <body>
+    <div class="glow"></div>
+    <main class="scene">
+      <section class="intro" id="intro">
+        <p class="eyebrow">A little something, just for you</p>
+        <h1>You've got a letter</h1>
+        <div class="envelope-wrap" id="envelope" role="button" tabindex="0" aria-label="Open your letter">
+          <div class="envelope"><div class="letter"><span>To my favourite person ♥</span></div></div>
+          <div class="flap"></div><div class="seal">♥</div>
+        </div>
+        <p class="hint">Tap the envelope to open it</p>
+      </section>
+      <section class="question" id="question" aria-live="polite">
+        <div class="question-card"><div class="tiny-heart">♥</div><h2>Are you mine<br>forever?</h2><p>My heart has already decided. I hope yours knows the answer too.</p><div class="button-area" id="buttonArea"><button id="yes">Yes, always ♥</button><button id="no" aria-label="No">No</button></div><p class="no-tease">I know you're stubborn, you would want to click no. 🙂</p></div>
+      </section>
+      <section class="answer" id="answer" aria-live="polite">
+        <div class="answer-card"><div class="sparkles">✦ ♥ ✦</div><h2>You are my<br>personal person<br>[TIMOTIMO]</h2><p>Aderonke omo Pa Awanebi, idan mi gangan. Thank you for being so great to me. You are astonishing and beautiful, though u get touch.</p><p class="signature">With all my heart, always ♥</p><button class="again" id="again">Open our letter again</button></div>
+      </section>
+    </main>
+    <script>
+      const intro=document.querySelector('#intro'), envelope=document.querySelector('#envelope'), question=document.querySelector('#question'), answer=document.querySelector('#answer'), no=document.querySelector('#no'), yes=document.querySelector('#yes'), area=document.querySelector('#buttonArea');
+      function openLetter(){ if(envelope.classList.contains('open'))return; envelope.classList.add('open'); for(let i=0;i<9;i++)setTimeout(makeHeart,i*90); setTimeout(()=>{intro.style.display='none'; question.classList.add('visible')},1050); }
+      envelope.addEventListener('click',openLetter); envelope.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();openLetter()}});
+      function evade(){ const card=area.getBoundingClientRect(), maxX=Math.max(80,card.width-120), x=(Math.random()-.5)*maxX*1.7, y=(Math.random()-.5)*130; no.style.transform=`translate(${x}px,${y}px)`; }
+      no.addEventListener('pointerenter',evade); no.addEventListener('click',evade); no.addEventListener('touchstart',e=>{e.preventDefault();evade()},{passive:false});
+      yes.addEventListener('click',()=>{question.classList.remove('visible'); answer.classList.add('visible'); for(let i=0;i<28;i++)setTimeout(makeHeart,i*75);});
+      function makeHeart(){const h=document.createElement('span');h.className='floating-heart';h.textContent=Math.random()>.35?'♥':'✦';h.style.left=(5+Math.random()*90)+'vw';h.style.fontSize=(13+Math.random()*24)+'px';h.style.setProperty('--x',(-120+Math.random()*240)+'px');document.body.append(h);h.addEventListener('animationend',()=>h.remove());}
+      document.querySelector('#again').addEventListener('click',()=>{answer.classList.remove('visible');intro.style.display='block';envelope.classList.remove('open');no.style.transform='';});
+    </script>
+  </body>
+</html>
